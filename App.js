@@ -1,14 +1,20 @@
 import * as React from 'react'
-import { Text, View, StyleSheet, TextInput,TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image } from 'react-native';
 import { Header } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import db from './localdb'
+
+const img = require('./assets/faceMonkey.png')
+
+// console.log(db['the'].chunks)
 
 export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
       text: "",
-      displayText:""
+      displayText:"",
+      chunks:[]
     }
   }
   render() {
@@ -18,6 +24,13 @@ export default class App extends React.Component {
           <Header
             backgroundColor='#9c8210' centerComponent={{ text: 'Cute Little Monkey', style: { color: '#fff', fontSize: 20 } }}
           />
+          <Image 
+            style={styles.imageIcon}
+            // source={{uri:'https://www.shareicon.net/data/128x128/2015/08/06/80805_face_512x512.png'}}
+            source={img}
+            // source={require('./assets/faceMonkey.png')}
+          />
+
           <TextInput
             style={styles.inputBox}
             onChangeText={text => { this.setState({ text: text }) }}
@@ -25,11 +38,20 @@ export default class App extends React.Component {
           />
           <TouchableOpacity 
             style={styles.goButton}
-            onPress={()=>{this.setState({displayText:this.state.text})}}
+            onPress={()=>{this.setState({chunks:db[this.state.text].chunks})}}
           >
             <Text style={styles.buttonText}>IR</Text>
           </TouchableOpacity>
-          <Text style={styles.displayText}>{this.state.displayText}</Text>
+          
+          <View>
+            {this.state.chunks.map(item =>{
+              return(
+                <TouchableOpacity style={styles.chunkButton}>
+                  <Text style={styles.displayText}>{item}</Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
         </View>
       </SafeAreaProvider>
     );
@@ -64,5 +86,20 @@ const styles = StyleSheet.create({
   displayText:{
     textAlign:'center',
     fontSize:30
+  },
+  imageIcon:{
+    width:150,
+    height:150,
+    alignSelf:'center'
+  },
+  chunkButton:{
+    width:'60%',
+    height:50,
+    justifyContent:'center',
+    alignItems:'center',
+    alignSelf:'center',
+    borderRadius:10,
+    margin:5,
+    backgroundColor:'red',
   }
 });
