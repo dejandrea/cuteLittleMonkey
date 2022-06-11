@@ -3,18 +3,20 @@ import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image } from 'react-
 import { Header } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import db from './localdb'
+import db1 from './db_1.json'
+import PhonicSoundButton from './components/PhonicSoundButton';
 
 const img = require('./assets/faceMonkey.png')
 
-// console.log(db['the'].chunks)
+//console.log(db1['the'].chunks)
 
 export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
       text: "",
-      displayText:"",
-      chunks:[]
+      chunks:[],
+      phonicSounds:[]
     }
   }
   render() {
@@ -38,17 +40,21 @@ export default class App extends React.Component {
           />
           <TouchableOpacity 
             style={styles.goButton}
-            onPress={()=>{this.setState({chunks:db[this.state.text].chunks})}}
+            onPress={()=>{
+              this.setState({chunks:db1[this.state.text].chunks})
+              this.setState({phonicSounds:db1[this.state.text].phones})
+            }}
           >
             <Text style={styles.buttonText}>IR</Text>
           </TouchableOpacity>
           
           <View>
-            {this.state.chunks.map(item =>{
+            {this.state.chunks.map((item,index) =>{
               return(
-                <TouchableOpacity style={styles.chunkButton}>
-                  <Text style={styles.displayText}>{item}</Text>
-                </TouchableOpacity>
+                <PhonicSoundButton
+                  wordChunk={this.state.chunks[index]}
+                  soundChunk={this.state.phonicSounds[index]}
+                />
               )
             })}
           </View>
