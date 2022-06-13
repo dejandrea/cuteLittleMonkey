@@ -3,19 +3,32 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Audio } from 'expo-av'
 
 export default class PhonicSoundButton extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      pressedButtonIndex: ""
+    }
+  }
   playSound = async (soundChunk) => {
-    var soundLink =  'https://s3-whitehatjrcontent.whjr.online/phones/' + soundChunk + '.mp3';
+    var soundLink = 'https://s3-whitehatjrcontent.whjr.online/phones/' + soundChunk + '.mp3';
     await Audio.Sound.createAsync(
-      {uri:soundLink},
-      {shouldPlay:true})
+      { uri: soundLink },
+      { shouldPlay: true })
   }
   render() {
     return (
-      <TouchableOpacity style={styles.chunkButton}
-      onPress={() => {
-        this.playSound(this.props.soundChunk);
-      }}>
-        <Text style={styles.displayText}>{this.props.wordChunk}</Text>
+      <TouchableOpacity style={
+        this.props.buttonIndex === this.state.pressedButtonIndex
+        ? [styles.chunkButton,{backgroundColor:'white'}]
+        : [styles.chunkButton,{backgroundColor:'red'}]
+      }
+        onPress={() => {
+          this.setState({pressedButtonIndex:this.props.buttonIndex})
+          this.playSound(this.props.soundChunk);
+        }}>
+        <Text style={this.props.buttonIndex === this.state.pressedButtonIndex
+        ? [styles.displayText,{color:'red'}]
+        : [styles.displayText,{color:'white'}]}>{this.props.wordChunk}</Text>
       </TouchableOpacity>
     )
   }

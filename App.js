@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image } from 'react-native';
+import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image,Alert } from 'react-native';
 import { Header } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import db from './localdb'
@@ -41,8 +41,12 @@ export default class App extends React.Component {
           <TouchableOpacity 
             style={styles.goButton}
             onPress={()=>{
-              this.setState({chunks:db1[this.state.text].chunks})
-              this.setState({phonicSounds:db1[this.state.text].phones})
+              var word = this.state.text.toLowerCase().trim();
+              db1[word] ? (
+              this.setState({chunks:db1[word].chunks}),
+              this.setState({phonicSounds:db1[word].phones})
+              ):
+              Alert.alert('A palavra digitada não existe em nosso banco de dados')
             }}
           >
             <Text style={styles.buttonText}>IR</Text>
@@ -54,6 +58,7 @@ export default class App extends React.Component {
                 <PhonicSoundButton
                   wordChunk={this.state.chunks[index]}
                   soundChunk={this.state.phonicSounds[index]}
+                  buttonIndex={index}
                 />
               )
             })}
