@@ -16,6 +16,7 @@ export default class PhonicSoundButton extends React.Component {
       { shouldPlay: true })
   }
   render() {
+    //this.setState({pressedButtonIndex:''})
     return (
       <TouchableOpacity style={
         this.props.buttonIndex === this.state.pressedButtonIndex

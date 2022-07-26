@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image,Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput,TouchableOpacity,Image,Alert ,ScrollView} from 'react-native';
 import { Header } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import db from './localdb'
@@ -26,12 +26,14 @@ export default class App extends React.Component {
           <Header
             backgroundColor='#9c8210' centerComponent={{ text: 'Cute Little Monkey', style: { color: '#fff', fontSize: 20 } }}
           />
+          
           <Image 
             style={styles.imageIcon}
             // source={{uri:'https://www.shareicon.net/data/128x128/2015/08/06/80805_face_512x512.png'}}
             source={img}
             // source={require('./assets/faceMonkey.png')}
           />
+
 
           <TextInput
             style={styles.inputBox}
@@ -51,7 +53,7 @@ export default class App extends React.Component {
           >
             <Text style={styles.buttonText}>IR</Text>
           </TouchableOpacity>
-          
+          <ScrollView> 
           <View>
             {this.state.chunks.map((item,index) =>{
               return(
@@ -63,6 +65,7 @@ export default class App extends React.Component {
               )
             })}
           </View>
+          </ScrollView>
         </View>
       </SafeAreaProvider>
     );
